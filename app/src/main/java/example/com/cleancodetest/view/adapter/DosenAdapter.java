@@ -47,33 +47,18 @@ public class DosenAdapter extends RecyclerView.Adapter<DosenAdapter.MyAdapterVie
 
     @Override
     public void onBindViewHolder(@NonNull DosenAdapter.MyAdapterViewHolder holder, final int position) {
-        final DosenModel responseDosen = dosenList.get(position);
+        //final DosenModel responseDosen = dosenList.get(position);
         holder.txtNama.setText(dosenList.get(position).getNama());
         holder.txtId.setText(dosenList.get(position).getId());
         holder.txtPelajaran.setText(dosenList.get(position).getPelajaran());
         Glide.with(this.context)
                 .load(dosenList.get(position).getFoto())
                 .into(holder.image);
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickListener.onClickListener(position);
-            }
-        });
+        holder.cardView.setOnClickListener(view -> clickListener.onClickCardView(position));
 
-        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickListener.onCLickDeleteButton(position);
-            }
-        });
+        holder.btnDelete.setOnClickListener(view -> clickListener.onCLickDeleteButton(position));
 
-        holder.btnUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickListener.onClickUpdateButton(position);
-            }
-        });
+        holder.btnUpdate.setOnClickListener(view -> clickListener.onClickUpdateButton(position));
     }
 
     @Override
@@ -88,12 +73,12 @@ public class DosenAdapter extends RecyclerView.Adapter<DosenAdapter.MyAdapterVie
         private Button btnDelete;
         private Button btnUpdate;
 
-        public MyAdapterViewHolder(View itemView) {
+        private MyAdapterViewHolder(View itemView) {
             super(itemView);
-            txtId = (TextView) itemView.findViewById(R.id.txt_id);
-            txtNama = (TextView) itemView.findViewById(R.id.txt_nama);
-            txtPelajaran = (TextView) itemView.findViewById(R.id.txt_pelajaran);
-            btnDelete = (Button) itemView.findViewById(R.id.button_delete);
+            txtId = itemView.findViewById(R.id.txt_id);
+            txtNama = itemView.findViewById(R.id.txt_nama);
+            txtPelajaran = itemView.findViewById(R.id.txt_pelajaran);
+            btnDelete = itemView.findViewById(R.id.button_delete);
             btnUpdate = itemView.findViewById(R.id.button_update);
             cardView = itemView.findViewById(R.id.card_view_dosen);
             image = itemView.findViewById(R.id.image_view);

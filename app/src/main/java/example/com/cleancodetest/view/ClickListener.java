@@ -1,10 +1,11 @@
 package example.com.cleancodetest.view;
 
 public interface ClickListener {
-    void onClickListener(int idDosen);
 
-    void onCLickDeleteButton(int idDosen);
+    void onClickCardView(int position);
 
-    void onClickUpdateButton(int idDosen);
+    void onCLickDeleteButton(int position);
+
+    void onClickUpdateButton(int position);
 }
 
