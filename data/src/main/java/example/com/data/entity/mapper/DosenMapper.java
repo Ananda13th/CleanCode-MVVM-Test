@@ -16,9 +16,6 @@ public class DosenMapper {
 
         DosenResp dosenResp = new DosenResp();
         List<Dosen> listDosen = new ArrayList<>();
-        dosenResp.setEpoch(dosenRespEntity.getEpoch());
-        dosenResp.setErrorCode(dosenRespEntity.getErrorCode());
-        dosenResp.setErrorMesssage(dosenRespEntity.getErrorMesssage());
 
         for(int i=0;i<dosenRespEntity.getDosenList().size();i++) {
             DosenEntity dosenEntity = dosenRespEntity.getDosenList().get(i);
@@ -40,8 +37,17 @@ public class DosenMapper {
         dosen.setFoto(dosenEntity.getFoto());
         dosen.setNama(dosenEntity.getNama());
         dosen.setPelajaran(dosenEntity.getPelajaran());
-
         return dosen;
+    }
+
+    public DosenResp deleteDosenRespToDomain(DosenRespEntity dosenRespEntity) {
+
+        DosenResp dosenResp = new DosenResp();
+        List<Dosen> listDosen = new ArrayList<>();
+        dosenResp.setEpoch(dosenRespEntity.getEpoch());
+        dosenResp.setErrorCode(dosenRespEntity.getErrorCode());
+        dosenResp.setErrorMesssage(dosenRespEntity.getErrorMesssage());
+        return  dosenResp;
     }
 
 

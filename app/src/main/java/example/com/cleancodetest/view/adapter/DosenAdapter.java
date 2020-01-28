@@ -1,6 +1,7 @@
 package example.com.cleancodetest.view.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,50 +16,42 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import example.com.cleancodetest.R;
+import example.com.cleancodetest.databinding.ListItemBinding;
 import example.com.cleancodetest.model.DosenModel;
 import example.com.cleancodetest.view.ClickListener;
 
-public class DosenAdapter extends RecyclerView.Adapter<DosenAdapter.MyAdapterViewHolder> {
+public class DosenAdapter extends RecyclerView.Adapter<DosenAdapter.MyAdapterViewHolder> implements ClickListener{
 
     private List<DosenModel> dosenList = new ArrayList<>();
     private ClickListener clickListener;
-    private Context context;
 
     public DosenAdapter() { }
 
     public void setDosenList( List<DosenModel> listDosen) {
         this.dosenList = listDosen;
-        //Refresh Data Di RecycleView
-        //Bila Tidak Pakai Ini, RecycleView Kebuat Dulu,, Baru Data Masuk
-        //RecycleView Harus Refresh Biar Tampil Data
         notifyDataSetChanged();
+    }
+
+    public void clickListener(ClickListener clickListener) {
+        this.clickListener = clickListener;
     }
 
 
     @Override
     public DosenAdapter.MyAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.list_item, parent, false);
-        context = parent.getContext();
-        return new MyAdapterViewHolder(view);
+        ListItemBinding listItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.list_item, parent, false);
+        return new MyAdapterViewHolder(listItemBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull DosenAdapter.MyAdapterViewHolder holder, final int position) {
-        //final DosenModel responseDosen = dosenList.get(position);
-        holder.txtNama.setText(dosenList.get(position).getNama());
-        holder.txtId.setText(dosenList.get(position).getId());
-        holder.txtPelajaran.setText(dosenList.get(position).getPelajaran());
-        Glide.with(this.context)
-                .load(dosenList.get(position).getFoto())
-                .into(holder.image);
-        holder.cardView.setOnClickListener(view -> clickListener.onClickCardView(position));
 
-        holder.btnDelete.setOnClickListener(view -> clickListener.onCLickDeleteButton(position));
-
-        holder.btnUpdate.setOnClickListener(view -> clickListener.onClickUpdateButton(position));
+        DosenModel dosen = dosenList.get(position);
+        holder.listItemBinding.setDosen(dosen);
+        holder.listItemBinding.setOnClick(this);
     }
 
     @Override
@@ -66,28 +59,38 @@ public class DosenAdapter extends RecyclerView.Adapter<DosenAdapter.MyAdapterVie
         return (dosenList != null) ? dosenList.size() : 0;
     }
 
-    public class MyAdapterViewHolder extends RecyclerView.ViewHolder {
-        private TextView txtNama, txtId, txtPelajaran;
-        private CardView cardView;
-        private ImageView image;
-        private Button btnDelete;
-        private Button btnUpdate;
 
-        private MyAdapterViewHolder(View itemView) {
-            super(itemView);
-            txtId = itemView.findViewById(R.id.txt_id);
-            txtNama = itemView.findViewById(R.id.txt_nama);
-            txtPelajaran = itemView.findViewById(R.id.txt_pelajaran);
-            btnDelete = itemView.findViewById(R.id.button_delete);
-            btnUpdate = itemView.findViewById(R.id.button_update);
-            cardView = itemView.findViewById(R.id.card_view_dosen);
-            image = itemView.findViewById(R.id.image_view);
+
+    public class MyAdapterViewHolder extends RecyclerView.ViewHolder {
+
+        ListItemBinding listItemBinding;
+
+        private MyAdapterViewHolder(ListItemBinding listItemBinding) {
+            super(listItemBinding.getRoot());
+            this.listItemBinding = listItemBinding;
         }
     }
 
     public void setOnClick(ClickListener listener) {
 
         this.clickListener = listener;
+    }
+
+    @Override
+    public void onClickCardView(DosenModel dosen) {
+        clickListener.onClickCardView(dosen);
+    }
+
+    @Override
+    public void onCLickDeleteButton(String idDosen) {
+        clickListener.onCLickDeleteButton(idDosen);
+
+    }
+
+    @Override
+    public void onClickUpdateButton(String idDosen) {
+        clickListener.onClickUpdateButton(idDosen);
+
     }
 
 }

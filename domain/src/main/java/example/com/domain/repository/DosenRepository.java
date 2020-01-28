@@ -11,4 +11,6 @@ public interface DosenRepository{
     Single<DosenResp> doGetListDosen();
 
     Single<Dosen> doGetDosen(String idDosen);
+
+
 }

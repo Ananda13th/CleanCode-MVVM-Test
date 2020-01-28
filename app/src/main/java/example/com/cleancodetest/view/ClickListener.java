@@ -1,11 +1,13 @@
 package example.com.cleancodetest.view;
 
+import example.com.cleancodetest.model.DosenModel;
+
 public interface ClickListener {
 
-    void onClickCardView(int position);
+    void onClickCardView(DosenModel dosen);
 
-    void onCLickDeleteButton(int position);
+    void onCLickDeleteButton(String idDosen);
 
-    void onClickUpdateButton(int position);
+    void onClickUpdateButton(String idDosen);
 }
 

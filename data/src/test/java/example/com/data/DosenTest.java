@@ -5,15 +5,20 @@ import com.google.gson.Gson;
 import org.junit.Assert;
 import org.junit.Test;
 
+import example.com.data.entity.BaseResponseEntity;
 import example.com.data.entity.DosenEntity;
 import example.com.data.entity.DosenRespEntity;
+import example.com.data.entity.mapper.BaseResponseMapper;
 import example.com.data.entity.mapper.DosenMapper;
 import example.com.data.net.DosenService;
 import example.com.data.net.ServiceGenerator;
+import example.com.data.repository.BaseResponseRepositoryImpl;
 import example.com.data.repository.DosenRepositoryImpl;
+import example.com.domain.model.BaseResponse;
 import example.com.domain.model.Dosen;
 import example.com.domain.model.DosenResp;
 import example.com.domain.repository.DosenRepository;
+import example.com.domain.usecase.dosen.DeleteDosenUseCase;
 import example.com.domain.usecase.dosen.GetDosenListUseCase;
 import example.com.domain.usecase.dosen.GetDosenUseCase;
 import io.reactivex.Scheduler;
@@ -48,7 +53,19 @@ public class DosenTest {
     }
 
     @Test
-    public void T003_GetDosenListImplementationTest() {
+    public void T003_DeleteDosenIntergrationTest() {
+        DosenService dosenService = ServiceGenerator.getDosenService();
+        Single<BaseResponseEntity> resp = dosenService.deleteDosen("D002");
+
+        TestObserver<BaseResponseEntity> testObserver = new TestObserver<>();
+        resp.subscribe(testObserver);
+        testObserver.assertComplete();
+        testObserver.assertNoErrors();
+        testObserver.values();
+    }
+
+    @Test
+    public void T004_GetDosenListImplementationTest() {
 
         DosenMapper dosenMapper = new DosenMapper();
         Scheduler scheduler = Schedulers.io();
@@ -65,7 +82,7 @@ public class DosenTest {
     }
 
     @Test
-    public void T004_GetDosenImplementationTest() {
+    public void T005_GetDosenImplementationTest() {
 
         DosenMapper dosenMapper = new DosenMapper();
         Scheduler scheduler = Schedulers.io();
@@ -82,7 +99,24 @@ public class DosenTest {
     }
 
     @Test
-    public void T005_GetDosenListUseCaseTest(){
+    public void T006_DeleteDosenImplementationTest() {
+        BaseResponseMapper baseResponseMapperMapper = new BaseResponseMapper();
+        Scheduler scheduler = Schedulers.io();
+        DosenService dosenService = ServiceGenerator.getDosenService();
+        BaseResponseRepositoryImpl baseResponseRepository = new BaseResponseRepositoryImpl(baseResponseMapperMapper,scheduler,dosenService);
+
+        Single<BaseResponse> resp = baseResponseRepository.doDeleteDosen("D002");
+
+        TestObserver<BaseResponse> testObserver = new TestObserver<>();
+        resp.subscribe(testObserver);
+        testObserver.awaitTerminalEvent();
+        testObserver.assertComplete();
+        testObserver.assertNoErrors();
+        testObserver.values();
+    }
+
+    @Test
+    public void T007_GetDosenListUseCaseTest(){
         DosenMapper dosenMapper = new DosenMapper();
         Scheduler scheduler = Schedulers.io();
         DosenService dosenService = ServiceGenerator.getDosenService();
@@ -102,7 +136,7 @@ public class DosenTest {
     }
 
     @Test
-    public void T006_GetDosenUseCaseTest(){
+    public void T008_GetDosenUseCaseTest(){
         DosenMapper dosenMapper = new DosenMapper();
         Scheduler scheduler = Schedulers.io();
         DosenService dosenService = ServiceGenerator.getDosenService();
@@ -119,5 +153,23 @@ public class DosenTest {
         testObserver.assertNoErrors();
         Assert.assertEquals("Angga", testObserver.values().get(0).getNama());
         //testObserver.assertEmpty();
+    }
+
+    @Test
+    public void T009_DeleteDosenUseCaseTest(){
+        BaseResponseMapper baseResponseMapperMapper = new BaseResponseMapper();
+        Scheduler scheduler = Schedulers.io();
+        DosenService dosenService = ServiceGenerator.getDosenService();
+        BaseResponseRepositoryImpl baseResponseRepository = new BaseResponseRepositoryImpl(baseResponseMapperMapper,scheduler,dosenService);
+
+        DeleteDosenUseCase dosenUseCase = new DeleteDosenUseCase(baseResponseRepository);
+
+        Single<BaseResponse> resp = dosenUseCase.execute("D002");
+
+        TestObserver<BaseResponse> testObserver = new TestObserver<>();
+        resp.subscribe(testObserver);
+        testObserver.awaitTerminalEvent();
+        testObserver.assertComplete();
+        testObserver.assertNoErrors();
     }
 }

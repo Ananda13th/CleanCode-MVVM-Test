@@ -16,10 +16,6 @@ public class DosenMapper {
 
         DosenRespModel dosenRespModel = new DosenRespModel();
         List<DosenModel> listDosen = new ArrayList<>();
-        dosenRespModel.setEpoch(dosenResp.getEpoch());
-        dosenRespModel.setErrorCode(dosenResp.getErrorCode());
-        dosenRespModel.setErrorMesssage(dosenResp.getErrorMesssage());
-
         for(int i = 0;i<dosenResp.getDosenList().size();i++) {
             Dosen dosen = dosenResp.getDosenList().get(i);
             DosenModel dosenModel = new DosenModel();
