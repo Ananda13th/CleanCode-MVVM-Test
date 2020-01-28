@@ -2,14 +2,12 @@ package example.com.cleancodetest.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import example.com.cleancodetest.R;
 import example.com.cleancodetest.view.fragment.DosenFragment;
 import example.com.cleancodetest.view.fragment.HomeFragment;
 import example.com.cleancodetest.view.fragment.WorkFragment;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -43,12 +41,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton add_button = findViewById(R.id.fab_add);
-        add_button.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton addButton = findViewById(R.id.fab_add);
+        addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent goToInsertActivity = new Intent(getApplicationContext(), InsertActivity.class);
-//                startActivity(goToInsertActivity);
+                Intent goToInsertActivity = new Intent(getApplicationContext(), InsertActivity.class);
+                startActivity(goToInsertActivity);
             }
         });
     }

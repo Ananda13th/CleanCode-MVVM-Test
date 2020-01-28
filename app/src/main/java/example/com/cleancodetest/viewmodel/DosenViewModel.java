@@ -1,11 +1,11 @@
 package example.com.cleancodetest.viewmodel;
 
+import android.widget.Toast;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import example.com.cleancodetest.model.DosenModel;
-import example.com.cleancodetest.model.DosenRespModel;
 import example.com.cleancodetest.model.mapper.DosenMapper;
-import example.com.domain.repository.DosenRepository;
 import example.com.domain.usecase.dosen.GetDosenUseCase;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -45,4 +45,6 @@ public class DosenViewModel extends ViewModel {
                     }
                 });
     }
+
+
 }

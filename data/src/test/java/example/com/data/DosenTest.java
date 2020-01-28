@@ -8,7 +8,6 @@ import org.junit.Test;
 import example.com.data.entity.BaseResponseEntity;
 import example.com.data.entity.DosenEntity;
 import example.com.data.entity.DosenRespEntity;
-import example.com.data.entity.mapper.BaseResponseMapper;
 import example.com.data.entity.mapper.DosenMapper;
 import example.com.data.net.DosenService;
 import example.com.data.net.ServiceGenerator;
@@ -17,7 +16,7 @@ import example.com.data.repository.DosenRepositoryImpl;
 import example.com.domain.model.BaseResponse;
 import example.com.domain.model.Dosen;
 import example.com.domain.model.DosenResp;
-import example.com.domain.repository.DosenRepository;
+import example.com.domain.usecase.dosen.AddDosenUseCase;
 import example.com.domain.usecase.dosen.DeleteDosenUseCase;
 import example.com.domain.usecase.dosen.GetDosenListUseCase;
 import example.com.domain.usecase.dosen.GetDosenUseCase;
@@ -65,7 +64,30 @@ public class DosenTest {
     }
 
     @Test
-    public void T004_GetDosenListImplementationTest() {
+    public void T004_AddDosenIntergrationTest() {
+        DosenService dosenService = ServiceGenerator.getDosenService();
+        DosenEntity dosenEntity = new DosenEntity();
+        dosenEntity.setPelajaran("BK");
+        dosenEntity.setNama("Beni");
+        dosenEntity.setFoto("www.pixiv.com");
+        dosenEntity.setId("D009");
+        Single<BaseResponseEntity> resp = dosenService.addDosen(dosenEntity);
+
+
+        TestObserver<BaseResponseEntity> testObserver = new TestObserver<>();
+        resp.subscribe(testObserver);
+        testObserver.assertComplete();
+        testObserver.assertNoErrors();
+        testObserver.values();
+    }
+
+    @Test
+    public void T005_UpdateDosenIntergrationTest() {
+
+    }
+
+    @Test
+    public void T006_GetDosenListImplementationTest() {
 
         DosenMapper dosenMapper = new DosenMapper();
         Scheduler scheduler = Schedulers.io();
@@ -82,7 +104,7 @@ public class DosenTest {
     }
 
     @Test
-    public void T005_GetDosenImplementationTest() {
+    public void T007_GetDosenImplementationTest() {
 
         DosenMapper dosenMapper = new DosenMapper();
         Scheduler scheduler = Schedulers.io();
@@ -99,11 +121,11 @@ public class DosenTest {
     }
 
     @Test
-    public void T006_DeleteDosenImplementationTest() {
-        BaseResponseMapper baseResponseMapperMapper = new BaseResponseMapper();
+    public void T008_DeleteDosenImplementationTest() {
+        DosenMapper dosenMapper = new DosenMapper();
         Scheduler scheduler = Schedulers.io();
         DosenService dosenService = ServiceGenerator.getDosenService();
-        BaseResponseRepositoryImpl baseResponseRepository = new BaseResponseRepositoryImpl(baseResponseMapperMapper,scheduler,dosenService);
+        BaseResponseRepositoryImpl baseResponseRepository = new BaseResponseRepositoryImpl(dosenMapper,scheduler,dosenService);
 
         Single<BaseResponse> resp = baseResponseRepository.doDeleteDosen("D002");
 
@@ -116,7 +138,46 @@ public class DosenTest {
     }
 
     @Test
-    public void T007_GetDosenListUseCaseTest(){
+    public void T009_AddDosenImplementationTest() {
+        DosenMapper dosenMapper = new DosenMapper();
+        Dosen dosen = new Dosen();
+        Scheduler scheduler = Schedulers.io();
+        DosenService dosenService = ServiceGenerator.getDosenService();
+        BaseResponseRepositoryImpl baseResponseRepository = new BaseResponseRepositoryImpl(dosenMapper,scheduler,dosenService);
+
+        dosen.setPelajaran("BK");
+        dosen.setNama("Beni");
+        dosen.setFoto("www.pixiv.com");
+        dosen.setId("D009");
+
+        Single<BaseResponse> resp = baseResponseRepository.doInsertDosen(dosen);
+        TestObserver<BaseResponse> testObserver = new TestObserver<>();
+        resp.subscribe(testObserver);
+        testObserver.awaitTerminalEvent();
+        testObserver.assertComplete();
+        testObserver.assertNoErrors();
+        testObserver.values();
+    }
+
+    @Test
+    public void T010_UpdateDosenImplementationTest() {
+        DosenMapper dosenMapper = new DosenMapper();
+        Scheduler scheduler = Schedulers.io();
+        DosenService dosenService = ServiceGenerator.getDosenService();
+        BaseResponseRepositoryImpl baseResponseRepository = new BaseResponseRepositoryImpl(dosenMapper,scheduler,dosenService);
+
+        Single<BaseResponse> resp = baseResponseRepository.doDeleteDosen("D002");
+
+        TestObserver<BaseResponse> testObserver = new TestObserver<>();
+        resp.subscribe(testObserver);
+        testObserver.awaitTerminalEvent();
+        testObserver.assertComplete();
+        testObserver.assertNoErrors();
+        testObserver.values();
+    }
+
+    @Test
+    public void T011_GetDosenListUseCaseTest(){
         DosenMapper dosenMapper = new DosenMapper();
         Scheduler scheduler = Schedulers.io();
         DosenService dosenService = ServiceGenerator.getDosenService();
@@ -136,7 +197,7 @@ public class DosenTest {
     }
 
     @Test
-    public void T008_GetDosenUseCaseTest(){
+    public void T012_GetDosenUseCaseTest(){
         DosenMapper dosenMapper = new DosenMapper();
         Scheduler scheduler = Schedulers.io();
         DosenService dosenService = ServiceGenerator.getDosenService();
@@ -156,16 +217,39 @@ public class DosenTest {
     }
 
     @Test
-    public void T009_DeleteDosenUseCaseTest(){
-        BaseResponseMapper baseResponseMapperMapper = new BaseResponseMapper();
+    public void T013_DeleteDosenUseCaseTest(){
+        DosenMapper dosenMapper = new DosenMapper();
         Scheduler scheduler = Schedulers.io();
         DosenService dosenService = ServiceGenerator.getDosenService();
-        BaseResponseRepositoryImpl baseResponseRepository = new BaseResponseRepositoryImpl(baseResponseMapperMapper,scheduler,dosenService);
+        BaseResponseRepositoryImpl baseResponseRepository = new BaseResponseRepositoryImpl(dosenMapper,scheduler,dosenService);
 
         DeleteDosenUseCase dosenUseCase = new DeleteDosenUseCase(baseResponseRepository);
 
         Single<BaseResponse> resp = dosenUseCase.execute("D002");
 
+        TestObserver<BaseResponse> testObserver = new TestObserver<>();
+        resp.subscribe(testObserver);
+        testObserver.awaitTerminalEvent();
+        testObserver.assertComplete();
+        testObserver.assertNoErrors();
+    }
+
+    @Test
+    public void T014_AddDosenUseCaseTest(){
+        DosenMapper dosenMapper = new DosenMapper();
+        Dosen dosen = new Dosen();
+        Scheduler scheduler = Schedulers.io();
+        DosenService dosenService = ServiceGenerator.getDosenService();
+        BaseResponseRepositoryImpl baseResponseRepository = new BaseResponseRepositoryImpl(dosenMapper,scheduler,dosenService);
+
+        AddDosenUseCase dosenUseCase = new AddDosenUseCase(baseResponseRepository);
+
+        dosen.setPelajaran("BK");
+        dosen.setNama("Beni");
+        dosen.setFoto("www.pixiv.com");
+        dosen.setId("D009");
+
+        Single<BaseResponse> resp = dosenUseCase.execute(dosen);
         TestObserver<BaseResponse> testObserver = new TestObserver<>();
         resp.subscribe(testObserver);
         testObserver.awaitTerminalEvent();

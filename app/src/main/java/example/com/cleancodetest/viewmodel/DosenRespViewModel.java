@@ -1,6 +1,8 @@
 package example.com.cleancodetest.viewmodel;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -8,6 +10,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import example.com.cleancodetest.model.BaseResponseModel;
+import example.com.cleancodetest.model.DosenModel;
 import example.com.cleancodetest.model.DosenRespModel;
 import example.com.cleancodetest.model.mapper.BaseResponseMapper;
 import example.com.cleancodetest.model.mapper.DosenMapper;
@@ -15,6 +18,7 @@ import example.com.data.net.DosenService;
 import example.com.data.net.ServiceGenerator;
 import example.com.data.repository.BaseResponseRepositoryImpl;
 import example.com.data.repository.DosenRepositoryImpl;
+import example.com.domain.usecase.dosen.AddDosenUseCase;
 import example.com.domain.usecase.dosen.DeleteDosenUseCase;
 import example.com.domain.usecase.dosen.GetDosenListUseCase;
 import io.reactivex.Scheduler;
@@ -35,10 +39,11 @@ public class DosenRespViewModel extends ViewModel {
     private DosenService dosenService = ServiceGenerator.getDosenService();
     //RepositoryImpl
     private DosenRepositoryImpl dosenRepositoryImpl = new DosenRepositoryImpl(dosenMapper,scheduler,dosenService);
-    private BaseResponseRepositoryImpl baseResponseRepositoryImpl = new BaseResponseRepositoryImpl(new example.com.data.entity.mapper.BaseResponseMapper(),scheduler, dosenService);
+    private BaseResponseRepositoryImpl baseResponseRepositoryImpl = new BaseResponseRepositoryImpl(dosenMapper,scheduler, dosenService);
     //UseCase
     private GetDosenListUseCase getDosenListUseCase = new GetDosenListUseCase(dosenRepositoryImpl);
     private DeleteDosenUseCase deleteDosenUseCase = new DeleteDosenUseCase(baseResponseRepositoryImpl);
+    private AddDosenUseCase addDosenUseCase = new AddDosenUseCase(baseResponseRepositoryImpl);
     //MutableLiveData
     private MutableLiveData<DosenRespModel> dosenResp;
     private MutableLiveData<BaseResponseModel> baseResp;
@@ -93,6 +98,23 @@ public class DosenRespViewModel extends ViewModel {
                     @Override
                     public void onError(Throwable e) {
 
+                    }
+                });
+    }
+
+    public void addDosen(DosenModel dosenModel) {
+        addDosenUseCase.execute(dosenMapperToView.dosenModelToDomain(dosenModel))
+                .map(baseResponseMapper::baseResponseToView)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponseModel>() {
+                    @Override
+                    public void onSuccess(BaseResponseModel baseResponseModel) {
+                        baseResp.setValue(baseResponseModel);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
                     }
                 });
 

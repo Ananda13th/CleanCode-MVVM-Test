@@ -39,4 +39,14 @@ public class DosenMapper {
 
         return dosenModel;
     }
+
+    public Dosen dosenModelToDomain(DosenModel dosenModel) {
+        Dosen dosen = new Dosen();
+        dosen.setId(dosenModel.getId());
+        dosen.setNama(dosenModel.getNama());
+        dosen.setPelajaran(dosenModel.getPelajaran());
+        dosen.setFoto(dosenModel.getFoto());
+
+        return dosen;
+    }
 }

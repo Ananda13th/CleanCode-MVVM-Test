@@ -10,9 +10,9 @@ import example.com.data.entity.DosenRespEntity;
 import example.com.domain.model.Dosen;
 import example.com.domain.model.DosenResp;
 
-public class DosenMapper {
+public class DosenMapper extends BaseResponseMapper{
 
-    public DosenResp dosenListRespToDomain(DosenRespEntity dosenRespEntity) {
+    public DosenResp dosenRespToDomain(DosenRespEntity dosenRespEntity) {
 
         DosenResp dosenResp = new DosenResp();
         List<Dosen> listDosen = new ArrayList<>();
@@ -31,7 +31,7 @@ public class DosenMapper {
         return  dosenResp;
     }
 
-    public Dosen dosenRespToDomain(DosenEntity dosenEntity) {
+    public Dosen dosenToDomain(DosenEntity dosenEntity) {
         Dosen dosen = new Dosen();
         dosen.setId(dosenEntity.getId());
         dosen.setFoto(dosenEntity.getFoto());
@@ -40,17 +40,13 @@ public class DosenMapper {
         return dosen;
     }
 
-    public DosenResp deleteDosenRespToDomain(DosenRespEntity dosenRespEntity) {
-
-        DosenResp dosenResp = new DosenResp();
-        List<Dosen> listDosen = new ArrayList<>();
-        dosenResp.setEpoch(dosenRespEntity.getEpoch());
-        dosenResp.setErrorCode(dosenRespEntity.getErrorCode());
-        dosenResp.setErrorMesssage(dosenRespEntity.getErrorMesssage());
-        return  dosenResp;
+    public DosenEntity dosenToData(Dosen dosen) {
+        DosenEntity dosenEntity = new DosenEntity();
+        dosenEntity.setId(dosen.getId());
+        dosenEntity.setFoto(dosen.getFoto());
+        dosenEntity.setNama(dosen.getNama());
+        dosenEntity.setPelajaran(dosen.getPelajaran());
+        return dosenEntity;
     }
-
-
-
 
 }

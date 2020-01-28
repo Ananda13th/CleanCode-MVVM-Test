@@ -3,12 +3,11 @@ package example.com.data.net;
 import example.com.data.entity.BaseResponseEntity;
 import example.com.data.entity.DosenEntity;
 import example.com.data.entity.DosenRespEntity;
-import example.com.domain.model.BaseResponse;
 import io.reactivex.Single;
-import retrofit2.Call;
-
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface DosenService {
@@ -20,5 +19,8 @@ public interface DosenService {
 
     @DELETE("dosens/{id}")
     Single<BaseResponseEntity> deleteDosen(@Path("id") String id);
+
+    @POST("dosen")
+    Single<BaseResponseEntity> addDosen(@Body DosenEntity dosen);
 
 }

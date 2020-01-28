@@ -27,7 +27,7 @@ public class DosenRepositoryImpl implements DosenRepository {
         //Defer Untuk Menetukan Sumber Data
         return Single.defer(()->dosenService.getDosenList())
                 //Menerjemahkan Data Dari dosenService.getDosenList() dari Entity ke Model di Domain
-                .map(dosenMapper::dosenListRespToDomain)
+                .map(dosenMapper::dosenRespToDomain)
                 .subscribeOn(scheduler);
     }
 
@@ -36,7 +36,7 @@ public class DosenRepositoryImpl implements DosenRepository {
         DosenService dosenService = ServiceGenerator.getDosenService();
         //Defer Untuk Menetukan Sumber Data
         return Single.defer(()->dosenService.getDosen(idDosen))
-                .map(dosenMapper::dosenRespToDomain)
+                .map(dosenMapper::dosenToDomain)
                 .subscribeOn(scheduler);
     }
 
