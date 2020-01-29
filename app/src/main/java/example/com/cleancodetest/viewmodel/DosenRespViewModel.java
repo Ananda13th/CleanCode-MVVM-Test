@@ -1,14 +1,10 @@
 package example.com.cleancodetest.viewmodel;
 
-import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
-
-import com.google.gson.Gson;
-
+import javax.inject.Inject;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import example.com.cleancodetest.di.DaggerDosenComponent;
 import example.com.cleancodetest.model.BaseResponseModel;
 import example.com.cleancodetest.model.DosenModel;
 import example.com.cleancodetest.model.DosenRespModel;
@@ -31,24 +27,48 @@ import io.reactivex.schedulers.Schedulers;
 public class DosenRespViewModel extends ViewModel {
 
     //Mapper
-    private example.com.data.entity.mapper.DosenMapper dosenMapper = new example.com.data.entity.mapper.DosenMapper();
-    private example.com.cleancodetest.model.mapper.DosenMapper dosenMapperToView = new DosenMapper();
-    private BaseResponseMapper baseResponseMapper = new BaseResponseMapper();
-    //Scheduler
-    private Scheduler scheduler = Schedulers.io();
-    //Service
-    private DosenService dosenService = ServiceGenerator.getDosenService();
-    //RepositoryImpl
-    private DosenRepositoryImpl dosenRepositoryImpl = new DosenRepositoryImpl(dosenMapper,scheduler,dosenService);
-    private BaseResponseRepositoryImpl baseResponseRepositoryImpl = new BaseResponseRepositoryImpl(dosenMapper,scheduler, dosenService);
-    //UseCase
-    private GetDosenListUseCase getDosenListUseCase = new GetDosenListUseCase(dosenRepositoryImpl);
-    private DeleteDosenUseCase deleteDosenUseCase = new DeleteDosenUseCase(baseResponseRepositoryImpl);
-    private AddDosenUseCase addDosenUseCase = new AddDosenUseCase(baseResponseRepositoryImpl);
-    private UpdateDosenUseCase updateDosenUseCase = new UpdateDosenUseCase(baseResponseRepositoryImpl);
+//    private example.com.cleancodetest.model.mapper.DosenMapper dosenMapperToView = new DosenMapper();
+//    private BaseResponseMapper baseResponseMapper = new BaseResponseMapper();
+//    //Scheduler
+//    private Scheduler scheduler = Schedulers.io();
+//    //Service
+//    private DosenService dosenService = ServiceGenerator.getDosenService();
+//    //RepositoryImpl
+//    private DosenRepositoryImpl dosenRepositoryImpl = new DosenRepositoryImpl(dosenMapper,scheduler,dosenService);
+//    private BaseResponseRepositoryImpl baseResponseRepositoryImpl = new BaseResponseRepositoryImpl(dosenMapper,scheduler, dosenService);
+//    //UseCase
+//    private GetDosenListUseCase getDosenListUseCase = new GetDosenListUseCase(dosenRepositoryImpl);
+//    private DeleteDosenUseCase deleteDosenUseCase = new DeleteDosenUseCase(baseResponseRepositoryImpl);
+//    private AddDosenUseCase addDosenUseCase = new AddDosenUseCase(baseResponseRepositoryImpl);
+//    private UpdateDosenUseCase updateDosenUseCase = new UpdateDosenUseCase(baseResponseRepositoryImpl);
     //MutableLiveData
     private MutableLiveData<DosenRespModel> dosenResp;
     private MutableLiveData<BaseResponseModel> baseResp;
+
+    public DosenRespViewModel() {
+        DaggerDosenComponent.create().inject(this);
+    }
+
+    @Inject
+    public Scheduler scheduler;
+
+    @Inject
+    public DosenMapper dosenMapperToView;
+
+    @Inject
+    public BaseResponseMapper baseResponseMapper;
+
+    @Inject
+    public GetDosenListUseCase getDosenListUseCase;
+
+    @Inject
+    public UpdateDosenUseCase updateDosenUseCase;
+
+    @Inject
+    public AddDosenUseCase addDosenUseCase;
+
+    @Inject
+    public DeleteDosenUseCase deleteDosenUseCase;
 
 
     public LiveData<DosenRespModel> getRespDosen() {

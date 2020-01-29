@@ -49,7 +49,7 @@ public class DosenFragment extends Fragment implements UpdateClickListener {
         dosenRespViewModel = ViewModelProviders.of(requireActivity()).get(DosenRespViewModel.class);
         setDosenList();
         RecyclerView recyclerView = requireActivity().findViewById(R.id.recycler_view);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         //Dialog Untuk Detail
