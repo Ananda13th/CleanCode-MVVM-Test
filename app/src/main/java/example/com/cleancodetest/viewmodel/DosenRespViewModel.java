@@ -21,6 +21,7 @@ import example.com.data.repository.DosenRepositoryImpl;
 import example.com.domain.usecase.dosen.AddDosenUseCase;
 import example.com.domain.usecase.dosen.DeleteDosenUseCase;
 import example.com.domain.usecase.dosen.GetDosenListUseCase;
+import example.com.domain.usecase.dosen.UpdateDosenUseCase;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -44,6 +45,7 @@ public class DosenRespViewModel extends ViewModel {
     private GetDosenListUseCase getDosenListUseCase = new GetDosenListUseCase(dosenRepositoryImpl);
     private DeleteDosenUseCase deleteDosenUseCase = new DeleteDosenUseCase(baseResponseRepositoryImpl);
     private AddDosenUseCase addDosenUseCase = new AddDosenUseCase(baseResponseRepositoryImpl);
+    private UpdateDosenUseCase updateDosenUseCase = new UpdateDosenUseCase(baseResponseRepositoryImpl);
     //MutableLiveData
     private MutableLiveData<DosenRespModel> dosenResp;
     private MutableLiveData<BaseResponseModel> baseResp;
@@ -117,7 +119,24 @@ public class DosenRespViewModel extends ViewModel {
                     public void onError(Throwable e) {
                     }
                 });
+    }
 
+    public void UpdateDosen(DosenModel dosenModel) {
+        updateDosenUseCase.execute(dosenMapperToView.dosenModelToDomain(dosenModel))
+                .map(baseResponseMapper::baseResponseToView)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BaseResponseModel>() {
+                    @Override
+                    public void onSuccess(BaseResponseModel baseResponseModel) {
+                        baseResp.setValue(baseResponseModel);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
     }
 
 }

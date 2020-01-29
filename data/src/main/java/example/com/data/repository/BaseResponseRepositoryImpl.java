@@ -30,8 +30,15 @@ public class BaseResponseRepositoryImpl implements BaseResponseRepository {
 
 
     @Override
-    public Single<BaseResponse> doInsertDosen(Dosen dosen) {
+    public Single<BaseResponse> doAddDosen(Dosen dosen) {
         return Single.defer(()->dosenService.addDosen(dosenMapper.dosenToData(dosen)))
+                .map(dosenMapper::baseResponseToDomain)
+                .subscribeOn(scheduler);
+    }
+
+    @Override
+    public Single<BaseResponse> doUpdateDosen(String idDosen, Dosen dosen) {
+        return Single.defer(()->dosenService.updateDosen(dosen.getId(), dosenMapper.dosenToData(dosen)))
                 .map(dosenMapper::baseResponseToDomain)
                 .subscribeOn(scheduler);
     }

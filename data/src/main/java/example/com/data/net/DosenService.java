@@ -8,6 +8,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface DosenService {
@@ -22,5 +23,8 @@ public interface DosenService {
 
     @POST("dosen")
     Single<BaseResponseEntity> addDosen(@Body DosenEntity dosen);
+
+    @PUT("dosens/{id}")
+    Single<BaseResponseEntity> updateDosen(@Path("id") String id, @Body DosenEntity dosen);
 
 }

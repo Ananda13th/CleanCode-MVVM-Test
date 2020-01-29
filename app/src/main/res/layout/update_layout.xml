@@ -1,20 +1,38 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+<layout>
+    <data>
+        <variable
+            name="dosen"
+            type="example.com.cleancodetest.model.DosenModel" />
+        <variable
+            name="onClick"
+            type="example.com.cleancodetest.view.UpdateClickListener" />
+    </data>
 
-    <EditText
-        android:id="@+id/editNama"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Nama" />
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/editPelajaran"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Pelajaran" />
-</LinearLayout>
+        <EditText
+            android:id="@+id/editNama"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nama"
+            android:text="@={dosen.nama}"/>
+
+        <EditText
+            android:id="@+id/editPelajaran"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Pelajaran"
+            android:text="@={dosen.pelajaran}"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UPDATE"
+            android:onClick="@{()->onClick.onClickUpdateButton(dosen)}"/>
+    </LinearLayout>
+</layout>

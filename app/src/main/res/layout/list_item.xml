@@ -86,7 +86,7 @@
                     android:id="@+id/button_update"
                     android:layout_toRightOf="@+id/button_delete"
                     android:text="UPDATE"
-                    android:onClick="@{()->onClick.onClickUpdateButton(dosen.id)}"/>
+                    android:onClick="@{()->onClick.onClickUpdateButton(dosen)}"/>
             </RelativeLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

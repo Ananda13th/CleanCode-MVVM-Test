@@ -1,7 +1,5 @@
 package example.com.data;
 
-import com.google.gson.Gson;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -20,6 +18,7 @@ import example.com.domain.usecase.dosen.AddDosenUseCase;
 import example.com.domain.usecase.dosen.DeleteDosenUseCase;
 import example.com.domain.usecase.dosen.GetDosenListUseCase;
 import example.com.domain.usecase.dosen.GetDosenUseCase;
+import example.com.domain.usecase.dosen.UpdateDosenUseCase;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.observers.TestObserver;
@@ -78,11 +77,18 @@ public class DosenTest {
         resp.subscribe(testObserver);
         testObserver.assertComplete();
         testObserver.assertNoErrors();
-        testObserver.values();
     }
 
     @Test
     public void T005_UpdateDosenIntergrationTest() {
+        DosenService dosenService = ServiceGenerator.getDosenService();
+        DosenEntity dosenEntity = new DosenEntity();
+        String id = "D001";
+        Single<BaseResponseEntity> resp = dosenService.updateDosen(id, dosenEntity);
+        TestObserver<BaseResponseEntity> testObserver = new TestObserver<>();
+        resp.subscribe(testObserver);
+        testObserver.assertComplete();
+        testObserver.assertNoErrors();
 
     }
 
@@ -150,7 +156,7 @@ public class DosenTest {
         dosen.setFoto("www.pixiv.com");
         dosen.setId("D009");
 
-        Single<BaseResponse> resp = baseResponseRepository.doInsertDosen(dosen);
+        Single<BaseResponse> resp = baseResponseRepository.doAddDosen(dosen);
         TestObserver<BaseResponse> testObserver = new TestObserver<>();
         resp.subscribe(testObserver);
         testObserver.awaitTerminalEvent();
@@ -248,6 +254,26 @@ public class DosenTest {
         dosen.setNama("Beni");
         dosen.setFoto("www.pixiv.com");
         dosen.setId("D009");
+
+        Single<BaseResponse> resp = dosenUseCase.execute(dosen);
+        TestObserver<BaseResponse> testObserver = new TestObserver<>();
+        resp.subscribe(testObserver);
+        testObserver.awaitTerminalEvent();
+        testObserver.assertComplete();
+        testObserver.assertNoErrors();
+    }
+
+    @Test
+    public void T015_UpdateDosenUseCaseTest(){
+        DosenMapper dosenMapper = new DosenMapper();
+        Dosen dosen = new Dosen();
+        Scheduler scheduler = Schedulers.io();
+        DosenService dosenService = ServiceGenerator.getDosenService();
+        BaseResponseRepositoryImpl baseResponseRepository = new BaseResponseRepositoryImpl(dosenMapper,scheduler,dosenService);
+
+        UpdateDosenUseCase dosenUseCase = new UpdateDosenUseCase(baseResponseRepository);
+
+        dosen.setId("D001");
 
         Single<BaseResponse> resp = dosenUseCase.execute(dosen);
         TestObserver<BaseResponse> testObserver = new TestObserver<>();

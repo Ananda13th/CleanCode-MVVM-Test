@@ -88,8 +88,8 @@ public class DosenAdapter extends RecyclerView.Adapter<DosenAdapter.MyAdapterVie
     }
 
     @Override
-    public void onClickUpdateButton(String idDosen) {
-        clickListener.onClickUpdateButton(idDosen);
+    public void onClickUpdateButton(DosenModel dosen) {
+        clickListener.onClickUpdateButton(dosen);
 
     }
 

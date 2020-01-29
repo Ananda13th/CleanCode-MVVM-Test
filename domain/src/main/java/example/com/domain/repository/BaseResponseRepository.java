@@ -6,5 +6,6 @@ import io.reactivex.Single;
 
 public interface BaseResponseRepository {
     Single<BaseResponse> doDeleteDosen(String idDosen);
-    Single<BaseResponse> doInsertDosen(Dosen dosen);
+    Single<BaseResponse> doAddDosen(Dosen dosen);
+    Single<BaseResponse> doUpdateDosen(String idDosen, Dosen dosen);
 }
